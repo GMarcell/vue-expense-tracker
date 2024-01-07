@@ -7,7 +7,22 @@
       :transactions="transactions"
       @transactionDeleted="handleTransactionDeleted"
     />
-    <AddTransaction @transactionSubmitted="handleTransactionSubmitted" />
+    <!-- <AddTransaction @transactionSubmitted="handleTransactionSubmitted" /> -->
+    <button @click="openModal" class="btn">Open Modal</button>
+    <Modal
+      :isOpen="isModalOpened"
+      @modal-close="closeModal"
+      @submit="closeModal"
+      name="modal"
+    >
+      <template #header>
+        <h4>Add Transaction</h4>
+        <button class="close-btn" @click="closeModal">X</button>
+      </template>
+      <template #content>
+        <AddTransaction @transactionSubmitted="handleTransactionSubmitted" />
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -17,12 +32,23 @@ import Balance from "./components/Balance.vue";
 import IncomeExpense from "./components/IncomeExpense.vue";
 import TransactionList from "./components/TransactionList.vue";
 import AddTransaction from "./components/AddTransaction.vue";
+import Modal from "./components/Modal.vue";
 
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
 import { computed, ref, onMounted } from "vue";
+
+// Modal Setting
+const isModalOpened = ref(false);
+const openModal = () => {
+  isModalOpened.value = true;
+};
+
+const closeModal = () => {
+  isModalOpened.value = false;
+};
 
 onMounted(() => {
   const savedTransaction = JSON.parse(localStorage.getItem("transactions"));

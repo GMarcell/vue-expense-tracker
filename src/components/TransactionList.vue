@@ -1,6 +1,7 @@
 <template>
   <h3>History</h3>
-  <ul class="list" id="list">
+  <div v-if="transactions.length < 1">No Transaction Recorded</div>
+  <ul class="list" id="list" v-if="transactions.length > 0">
     <li
       v-for="t in transactions"
       :key="t.id"
@@ -13,8 +14,6 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
-
 const emit = defineEmits(["transactionDeleted"]);
 
 const props = defineProps({
